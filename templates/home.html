@@ -1,0 +1,55 @@
+{% load tailwind_filters %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image library</title>
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body>
+    <section class="text-gray-600 body-font">
+        <div class="container px-5 py-24 mx-auto">
+          <div class="flex flex-col text-center w-full mb-20">
+            <h1 class="sm:text-3xl text-2xl font-medium title-font mb-4 text-gray-900">Image library in django</h1>
+            <p class="lg:w-2/3 mx-auto leading-relaxed text-base">Upload useful images for others only one at a time and scroll to see attractive images</p>
+            <div class="lg:w-2/3 mx-auto leading-relaxed text-base mt-4">
+                <div class="text-center">
+                    
+                <form action="" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{form|crispy}}
+                    <button type="submit" class="ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded">Upload</button>
+
+                </form>
+                </div>
+            </div>
+          </div>
+          <div class="flex flex-wrap -m-4 -ml-2.2">
+
+                {% for image in images%}
+                <div class="lg:w-1/3 sm:w-1/2 p-4 h-80">
+                    <div class="flex relative rounded w-full h-full p-auto">
+                        <img alt="gallery" class="absolute inset-0 w-full h-full object-center" src="{{image.image.url}}">
+                        <div class="px-8 py-10 relative z-10 h-full w-full bg-white opacity-0 hover:opacity-90">
+                            <h2 class="tracking-widest text-sm title-font font-medium text-indigo-500 mb-1">Uploaded date {{image.date}}</h2>
+                            <p class="leading-relaxed mb-3">{{image.description}} </p>
+                            <form action="" method="post">
+                                {% csrf_token %}
+                                <button type="hidden" value="{{image.id}}" id="{{image.id}}" name="delete" class="ml-auto text-white bg-indigo-600 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-700 rounded">delete</button>
+                            </form>
+                            
+                            <!-- <a href="" class="ml-auto text-white bg-indigo-600 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-700 rounded">Delete</a> -->
+                    </div>
+                    </div>
+                </div>
+                {%empty%}
+                <p>no image to Uploaded please Upload.</p>
+                {% endfor %}
+            
+          </div>
+        </div>
+      </section>
+</body>
+</html>
